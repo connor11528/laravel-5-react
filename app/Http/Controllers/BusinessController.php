@@ -14,7 +14,7 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        //
+        return Business::latest()->get();
     }
 
     /**
@@ -24,7 +24,7 @@ class BusinessController extends Controller
      */
     public function create()
     {
-        dd('hello');
+        return view('businesses.create');
     }
 
     /**
