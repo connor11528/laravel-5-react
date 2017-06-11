@@ -1,6 +1,5 @@
 How to build a REST API with Laravel 5.4
 ===
-
 We are going to create a simple REST API using Laravel 5. The application will be able to create, read, update and delete (CRUD) businesses from the database. We will store the name, location and description for businesses within a SQLite database.
 
 Laravel is an awesome web framework for PHP that makes it really easy to build powerful web applications. 
@@ -102,6 +101,27 @@ $ php artisan migrate:install
 $ php artisan migrate
 ```
 This wil create the businesses table and database connection. 
+### Seed the Database
+Head into **database/factories/ModelFactory.php** and paste in code to generate mock records for our database when our application starts up. This will use the [Faker PHP package](https://github.com/fzaninotto/Faker) for randomly generating the business names, catchphrase descriptions and locations.
+
+```
+...
+$factory->define(App\Business::class, function(Faker\Generator $faker){
+   return [
+     'name' => $faker->company,
+     'description' => $faker->catchPhrase,
+     'latitude' => $faker->latitude,
+     'longitude' => $faker->longitude
+   ];
+});
+```
+Fire up the shell and run:
+
+```
+$ php artisan tinker
+Psy Shell v0.8.6 (PHP 5.6.27 — cli) by Justin Hileman
+>>> factory('App\Business', 30)->create();
+```
 
 ### Generate Routes and Views
 
@@ -118,8 +138,6 @@ This will generate the below routes for Creating, Reading, Updating and Deleting
 Create a directory 
 
 ### Add React.js
-
-
 
 Update the package.json file to call the cross-env package when running commands. This is documented in [laravel-mix issue #478](https://github.com/JeffreyWay/laravel-mix/issues/478).
 
@@ -143,27 +161,27 @@ mix.react('resources/assets/js/app.jsx', 'public/js')
 ```
 This is in the official Laravel documentation [here](https://laravel.com/docs/5.4/mix#react).
 
-Change the **resources/assets/js/app.js** file to be called **resources/assets/js/app.jsx**. Log out the React.js library to the console:
+Change the **resources/assets/js/app.js** file to be called **resources/assets/js/app.jsx**. Change the contents of the file to log the React.js library to the console:
 
 ```
 require('./bootstrap');
-
 window.React = require('react');
-
 console.log(React);
 ```
 
-Run the commands to install our required packages and bundle our code with livereloading.
+From the terminal install the required packages and bundle our code with livereloading.
 ```
 $ yarn add --dev react react-dom cross-env
 $ yarn install
 $ yarn run dev
 ```
 
+```
+<link href="{{ mix('css/app.css') }}" rel="stylesheet">
+<script src="{{ mix('js/app.js') }}"></script>
+```
 
-
-
-
+Might have to add a **.babelrc**: https://github.com/JeffreyWay/laravel-mix/issues/333
 
 
 
