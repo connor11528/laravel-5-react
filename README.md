@@ -5,7 +5,9 @@ We are going to create a simple REST API using Laravel 5. The application will b
 
 Laravel is an awesome web framework for PHP that makes it really easy to build powerful web applications. 
 
-Prereq: [Install Laravel](https://laravel.com/docs/5.4/installation)
+Prereq: 
+[Install Laravel](https://laravel.com/docs/5.4/installation) - framework we'll be using
+[Install Yarn](https://yarnpkg.com/en/docs/install) - Node.js package manager, similar to npm
 
 First create a brand spanking new Laravel 5.4 project:
 
@@ -101,7 +103,7 @@ $ php artisan migrate
 ```
 This wil create the businesses table and database connection. 
 
-### Create Resource Routes and Controller
+### Generate Routes and Views
 
 Add one line in **routes/web.php**:
 
@@ -113,9 +115,50 @@ This will generate the below routes for Creating, Reading, Updating and Deleting
 
 ![The resource controller routes available to our application](https://cdn.scotch.io/2842/Mf4pMJdQQilZtzxyosAQ_Screen%20Shot%202017-06-10%20at%209.22.56%20PM.png)
 
+Create a directory 
+
+### Add React.js
 
 
 
+Update the package.json file to call the cross-env package when running commands. This is documented in [laravel-mix issue #478](https://github.com/JeffreyWay/laravel-mix/issues/478).
+
+```
+...
+  "scripts": {
+    "dev": "npm run development",
+    "development": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  ...
+  ```
+
+Head into webpack.mix.js and replace the mix.js() call with mix.react() call like so:
+```
+mix.react('resources/assets/js/app.jsx', 'public/js')
+```
+This is in the official Laravel documentation [here](https://laravel.com/docs/5.4/mix#react).
+
+Change the **resources/assets/js/app.js** file to be called **resources/assets/js/app.jsx**. Log out the React.js library to the console:
+
+```
+require('./bootstrap');
+
+window.React = require('react');
+
+console.log(React);
+```
+
+Run the commands to install our required packages and bundle our code with livereloading.
+```
+$ yarn add --dev react react-dom cross-env
+$ yarn install
+$ yarn run dev
+```
 
 
 

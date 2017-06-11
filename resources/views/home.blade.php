@@ -8,6 +8,8 @@
     </div>
     <div class='row'>
         <h2>Business List</h2>
+
+        <div id="example"></div>
     </div>
     <div class='row'>
         <a href='/businesses/create'>Create a new business</a>

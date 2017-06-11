@@ -10,4 +10,7 @@ require('./bootstrap');
 window.React = require('react');
 
 
+import Example from './components/Example';
+
+
 console.log(React);
